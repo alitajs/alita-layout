@@ -1,7 +1,7 @@
 {
-  "name": "@ant-design/pro-layout",
-  "version": "4.5.2",
-  "description": "ant-design-pro layout, easy to use pro scaffolding.",
+  "name": "@alitajs/alita-layout",
+  "version": "1.0.0",
+  "description": "The generic h5 layout in umi uses antd-mobile.",
   "files": [
     "/lib",
     "/es"
@@ -23,8 +23,8 @@
     "lint:style": "stylelint --fix  'src/**/*.less'  --syntax less",
     "prepublishOnly": "umi-lib build",
     "prettier": "node ./scripts/prettier.js",
-    "start": "cd ./example && cross-env APP_TYPE=site umi dev",
-    "test": "umi test"
+    "test": "umi test",
+    "publish": "npm publish --access public"
   },
   "husky": {
     "hooks": {
@@ -45,23 +45,10 @@
     "not ie <= 10"
   ],
   "dependencies": {
-    "antd": "^3.19.0",
-    "classnames": "^2.2.6",
+    "antd-mobile": "^2.2.14",
     "history": "^4.9.0",
-    "lodash": "^4.17.10",
-    "lodash-decorators": "^6.0.0",
-    "memoize-one": "^5.0.4",
-    "moment": "^2.22.2",
-    "omit.js": "^1.0.0",
-    "path-to-regexp": "^3.0.0",
-    "qs": "^6.7.0",
-    "react": "^16.8.5",
-    "react-container-query": "^0.11.0",
-    "react-copy-to-clipboard": "^5.0.1",
-    "react-document-title": "^2.0.3",
-    "react-dom": "^16.7.0",
-    "react-media-hook2": "^1.0.2",
-    "react-router-dom": "^5.0.0"
+    "react": "^16.8.6",
+    "umi": "^2.6.14"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -77,6 +64,7 @@
     "@types/react-intl": "^2.3.17",
     "@types/react-router-dom": "^4.3.2",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.10.2",
     "babel-eslint": "^10.0.1",
     "babel-plugin-import": "^1.12.0",
     "chalk": "^2.4.2",
@@ -118,7 +106,6 @@
     "stylelint-config-standard": "^18.2.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.1.0",
     "stylelint-order": "^3.0.0",
-    "umi": "^2.6.14",
     "umi-library": "^1.3.0",
     "umi-types": "^0.3.5"
   },
