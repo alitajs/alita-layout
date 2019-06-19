@@ -35,7 +35,7 @@ interface AlitaLayoutProps<
   history: H.History;
   location: H.Location<S>;
   match: Match<Params>;
-  tarBar: TarBarProps;
+  tarBar?: TarBarProps;
 }
 const AlitaLayout: FC<AlitaLayoutProps> = ({
   children,
