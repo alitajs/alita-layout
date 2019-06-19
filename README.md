@@ -46,5 +46,9 @@ render(<BasicLayout />, document.getElementById('root'));
 | --- | --- | --- | --- |
 |pagePath |string |是 |页面路径，必须在 pages 中先定义|
 |text |string |是 |tab 上按钮文字|
-|iconPath |string |否 |图片路径，当 position 为 top 时，不显示 icon。|
-|selectedIconPath |string |否 |选中时的图片路径，当 position 为 top 时，不显示 icon。|
+|iconPath |string | 是 |图片路径，当 position 为 top 时，不显示 icon。|
+|selectedIconPath |string | 是 |选中时的图片路径，当 position 为 top 时，不显示 icon。|
+|iconSize |string | 否 |0.44rem|
+|badge |string | 否 | badge |
+|onPress | function | 否 | 点击事件 |
+
