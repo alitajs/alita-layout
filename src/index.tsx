@@ -14,7 +14,7 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
 export interface TabBarListItem {
   pagePath: string;
   text: string;
-  iconSize: string;
+  iconSize?: string;
   badge?: string;
   iconPath: string;
   selectedIconPath: string;
