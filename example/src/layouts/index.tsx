@@ -49,11 +49,26 @@ const BasicLayout: React.FC = props => {
     titleList,
     navBar: {
       mode: 'light',
-      icon: <Icon type="left" />,
       onLeftClick: () => console.log('onLeftClick'),
       rightContent: [
         <Icon key="0" type="search" style={{ marginRight: '16px' }} />,
         <Icon key="1" type="ellipsis" />,
+      ],
+      navList: [
+        {
+          pagePath: '/home',
+          navBar: {
+            mode: 'dark',
+            icon: <Icon type="left" />,
+            onLeftClick: () => console.log('onLeftClick'),
+          },
+        },
+        {
+          pagePath: '/list',
+          navBar: {
+            hideNavBar: true,
+          },
+        },
       ],
     } as NavBarProps,
   };

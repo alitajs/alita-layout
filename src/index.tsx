@@ -5,6 +5,11 @@ import withRouter from 'umi/withRouter';
 import * as H from 'history';
 import DocumentTitle from 'react-document-title';
 
+export interface NarBarListItem {
+  pagePath: string;
+  navBar: NavBarProps;
+}
+
 export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   prefixCls?: string;
   className?: string;
@@ -13,6 +18,8 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
   onLeftClick?: React.MouseEventHandler<HTMLDivElement>;
+  navList?: NarBarListItem[];
+  hideNavBar?: boolean;
 }
 export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   params: Params;
@@ -52,28 +59,63 @@ interface AlitaLayoutProps<
   match: Match<Params>;
   tarBar?: TarBarProps;
   documentTitle?: string;
-  hideNavBar?: boolean;
   titleList: TitleListItem[];
   navBar?: NavBarProps;
 }
+const checkNavBarList = (
+  pagePath: string,
+  lists: NarBarListItem[],
+): NavBarProps | null => {
+  const page = lists.filter(
+    item => item.pagePath === pagePath && !!item.navBar,
+  );
+  if (page && page.length > 0) {
+    return page[0].navBar;
+  }
+  return null;
+};
+const checkTabsList = (
+  pagePath: string,
+  lists: TabBarListItem[],
+): { hasTabsBar: boolean; pageTitle?: string } => {
+  const page = lists.filter(
+    (item: { pagePath: string }) => item.pagePath === pagePath,
+  );
+  return {
+    hasTabsBar: page && page.length > 0,
+    pageTitle: page[0] ? page[0].title || page[0].text : '',
+  };
+};
+const checkTitleList = (pagePath: string, lists: TitleListItem[]): string => {
+  const page = lists.filter(
+    (item: { pagePath: string }) => item.pagePath === pagePath,
+  );
+  return page[0] ? page[0].title : '';
+};
+
 const headerRender = ({
-  hideNavBar,
   navBar,
   hasTabsBar,
   realTitle,
+  pathname,
 }: {
-  hideNavBar: boolean;
   hasTabsBar: boolean;
   navBar: NavBarProps;
   realTitle: string;
+  pathname: string;
 }): React.ReactNode => {
+  const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
+  const { navList } = navBar;
+  let pageNavBar = null;
+  if (navList) {
+    pageNavBar = checkNavBarList(pathname, navList);
+  }
+  const realNavBar = pageNavBar || navBar;
+  const { mode, icon, onLeftClick, rightContent, hideNavBar } = realNavBar;
+  const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
   if (hideNavBar === true) {
     return null;
   }
-
-  const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
-  const { mode = 'light', icon, onLeftClick, rightContent } = navBar;
-  const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
   return (
     <NavBar
       mode={mode}
@@ -90,7 +132,6 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   location: { pathname },
   tarBar = {},
   documentTitle,
-  hideNavBar = false,
   titleList = [],
   navBar = {},
 }) => {
@@ -101,21 +142,10 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     backgroungColor = '#FFF',
     position,
   } = tarBar as TarBarProps;
-  const checkTabsList = (
-    pagePath: string,
-    lists: TabBarListItem[] | TitleListItem[] | any[],
-  ): { hasTabsBar: boolean; pageTitle?: string } => {
-    const page = lists.filter(
-      (item: { pagePath: string }) => item.pagePath === pagePath,
-    );
-    return {
-      hasTabsBar: page && page.length > 0,
-      pageTitle: page[0] ? page[0].title || page[0].text : '',
-    };
-  };
+
   const { hasTabsBar, pageTitle } = checkTabsList(pathname, list);
-  const titleListItem = checkTabsList(pathname, titleList);
-  const realTitle = titleListItem.pageTitle || pageTitle || documentTitle || '';
+  const titleListItem = checkTitleList(pathname, titleList);
+  const realTitle = titleListItem || pageTitle || documentTitle || '';
 
   return (
     <DocumentTitle title={realTitle}>
@@ -123,10 +153,10 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
         {!hasTabsBar && (
           <>
             {headerRender({
-              hideNavBar,
               hasTabsBar,
               navBar,
               realTitle,
+              pathname,
             })}
             {children}
           </>
@@ -179,10 +209,10 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                   key={item.pagePath}
                 >
                   {headerRender({
-                    hideNavBar,
                     hasTabsBar,
                     navBar,
                     realTitle,
+                    pathname,
                   })}
                   {children}
                 </TabBar.Item>

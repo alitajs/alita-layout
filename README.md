@@ -36,7 +36,6 @@ render(<BasicLayout />, document.getElementById('root'));
 | --- | --- | --- | --- | --- |
 | tarBar | TarBarProps | 否 | 无 | 定义页面切换页信息，api参考微信小程序 |
 | documentTitle | string | 否 | 无 | 定义项目的默认title |
-| hideNavBar | boolean | 否 | false | 隐藏NavBar，默认有NarBar |
 | titleList | TitleListItem[] | 否 | 无 | 定义所有页面的title |
 | navBar | NavBarProps | 否 | 无 | 定义头部导航信息 |
 
@@ -75,3 +74,12 @@ render(<BasicLayout />, document.getElementById('root'));
 | leftContent | 导航左边内容 | any | 无 |
 | rightContent | 导航右边内容 | any | 无 |
 | onLeftClick | 导航左边点击回调 | (e: Object): void |有左侧回退图标的默认事件是返回上一页 |
+| navList | 单独设置某些页面的navbar | NarBarListItem | 无 |
+| hideNavBar | boolean | 否 | false | 隐藏NavBar，默认有NarBar |
+
+### navList 参数说明
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| pathName | 路由名称 | string | 无 |
+| navBar | 当前路由的navBar | NavBarProps | 无 |
