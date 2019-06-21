@@ -48,6 +48,7 @@
     "antd-mobile": "^2.2.14",
     "history": "^4.9.0",
     "react": "^16.8.6",
+    "react-document-title": "^2.0.3",
     "umi": "2.7.7"
   },
   "devDependencies": {
