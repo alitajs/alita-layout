@@ -30,6 +30,16 @@ render(<BasicLayout />, document.getElementById('root'));
 
 ## API
 
+### 所有参数说明
+
+| 属性 | 类型 | 必填 | 默认值 | 描述 |
+| --- | --- | --- | --- | --- |
+| tarBar | TarBarProps | 否 | 无 | 定义页面切换页信息，api参考微信小程序 |
+| documentTitle | string | 否 | 无 | 定义项目的默认title |
+| hideNavBar | boolean | 否 | false | 隐藏NavBar，默认有NarBar |
+| titleList | TitleListItem[] | 否 | 无 | 定义所有页面的title |
+| navBar | NavBarProps | 否 | 无 | 定义头部导航信息 |
+
 ### tarBar 参数说明
 
 | 属性 | 类型 | 必填 | 默认值 | 描述 |
@@ -42,13 +52,26 @@ render(<BasicLayout />, document.getElementById('root'));
 
 ### list 参数说明
 
-|属性 |类型 |必填 |说明|
+| 属性 | 类型 | 必填 | 说明|
 | --- | --- | --- | --- |
-|pagePath |string |是 |页面路径，必须在 pages 中先定义|
-|text |string |是 |tab 上按钮文字|
-|iconPath |string | 是 |图片路径，当 position 为 top 时，不显示 icon。|
-|selectedIconPath |string | 是 |选中时的图片路径，当 position 为 top 时，不显示 icon。|
-|iconSize |string | 否 |0.44rem|
-|badge |string | 否 | badge |
-|onPress | function | 否 | 点击事件 |
+| pagePath | string | 是 | 页面路径，必须在 pages 中先定义|
+| text | string | 是 | tab 上按钮文字|
+| iconPath | string | 是 |图片路径，当 position 为 top 时，不显示 icon。|
+| selectedIconPath | string | 是 |选中时的图片路径，当 position 为 top 时，不显示 icon。|
+| iconSize | string | 否 |0.44rem|
+| badge | string | 否 | badge |
+| onPress | function | 否 | 点击事件 |
+| title | string | 否 | 定义页面标题 |
 
+> 关于页面标题，声明权重如下：
+> titleList > list.title > list.text > documentTitle > ''
+
+### navBar 参数说明
+
+| 属性 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| mode | 模式 | string | 'dark' enum{'dark', 'light'} |
+| icon | 出现在最左边的图标占位符 | ReactNode | 不在tabsBar的页面，会有默认左侧回退图标 |
+| leftContent | 导航左边内容 | any | 无 |
+| rightContent | 导航右边内容 | any | 无 |
+| onLeftClick | 导航左边点击回调 | (e: Object): void |有左侧回退图标的默认事件是返回上一页 |
