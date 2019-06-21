@@ -59,7 +59,7 @@ interface AlitaLayoutProps<
   match: Match<Params>;
   tarBar?: TarBarProps;
   documentTitle?: string;
-  titleList: TitleListItem[];
+  titleList?: TitleListItem[];
   navBar?: NavBarProps;
 }
 const checkNavBarList = (
