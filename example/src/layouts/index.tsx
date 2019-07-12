@@ -49,6 +49,7 @@ const BasicLayout: React.FC = props => {
     titleList,
     navBar: {
       mode: 'light',
+      fixed: false,
       onLeftClick: () => console.log('onLeftClick'),
       rightContent: [
         <Icon key="0" type="search" style={{ marginRight: '16px' }} />,

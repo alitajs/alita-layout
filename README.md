@@ -68,14 +68,15 @@ render(<BasicLayout />, document.getElementById('root'));
 ### navBar 参数说明
 
 | 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- |--- |
 | mode | 模式 | string | 'dark' enum{'dark', 'light'} |
 | icon | 出现在最左边的图标占位符 | ReactNode | 不在tabsBar的页面，会有默认左侧回退图标 |
 | leftContent | 导航左边内容 | any | 无 |
 | rightContent | 导航右边内容 | any | 无 |
 | onLeftClick | 导航左边点击回调 | (e: Object): void |有左侧回退图标的默认事件是返回上一页 |
 | navList | 单独设置某些页面的navbar | NarBarListItem | 无 |
-| hideNavBar | boolean | 否 | false | 隐藏NavBar，默认有NarBar |
+| hideNavBar | 隐藏NavBar，默认有NarBar | boolean | false |
+| fixed | NavBar固定在页面头部 | boolean | false |
 
 ### navList 参数说明
 

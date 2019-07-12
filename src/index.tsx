@@ -20,6 +20,7 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   onLeftClick?: React.MouseEventHandler<HTMLDivElement>;
   navList?: NarBarListItem[];
   hideNavBar?: boolean;
+  fixed?: boolean;
 }
 export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   params: Params;
@@ -105,7 +106,7 @@ const headerRender = ({
   pathname: string;
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
-  const { navList } = navBar;
+  const { navList, fixed } = navBar;
   let pageNavBar = null;
   if (navList) {
     pageNavBar = checkNavBarList(pathname, navList);
@@ -117,14 +118,19 @@ const headerRender = ({
     return null;
   }
   return (
-    <NavBar
-      mode={mode}
-      icon={icon || defaultIcon}
-      onLeftClick={defaultEvent}
-      rightContent={rightContent}
-    >
-      {realTitle}
-    </NavBar>
+    <>
+      <div style={fixed ? { position: 'absolute', top: 0, width: '100%' } : {}}>
+        <NavBar
+          mode={mode}
+          icon={icon || defaultIcon}
+          onLeftClick={defaultEvent}
+          rightContent={rightContent}
+        >
+          {realTitle}
+        </NavBar>
+      </div>
+      {fixed && <div style={{ height: '0.9rem' }}></div>}
+    </>
   );
 };
 const AlitaLayout: FC<AlitaLayoutProps> = ({
