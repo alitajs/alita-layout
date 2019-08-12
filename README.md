@@ -68,7 +68,7 @@ render(<BasicLayout />, document.getElementById('root'));
 ### navBar 参数说明
 
 | 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |--- |
+| --- | --- | --- | --- |
 | mode | 模式 | string | 'dark' enum{'dark', 'light'} |
 | icon | 出现在最左边的图标占位符 | ReactNode | 不在tabsBar的页面，会有默认左侧回退图标 |
 | leftContent | 导航左边内容 | any | 无 |
