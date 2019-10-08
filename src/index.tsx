@@ -111,7 +111,10 @@ const headerRender = ({
   if (navList) {
     pageNavBar = checkNavBarList(pathname, navList);
   }
-  const realNavBar = pageNavBar || navBar;
+  const realNavBar = {
+    ...navBar,
+    ...pageNavBar,
+  };
   const { mode, icon, onLeftClick, rightContent, hideNavBar } = realNavBar;
   const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
   if (hideNavBar === true) {
