@@ -115,7 +115,14 @@ const headerRender = ({
     ...navBar,
     ...pageNavBar,
   };
-  const { mode, icon, onLeftClick, rightContent, hideNavBar } = realNavBar;
+  const {
+    mode,
+    icon,
+    onLeftClick,
+    rightContent,
+    hideNavBar,
+    className,
+  } = realNavBar;
   const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
   if (hideNavBar === true) {
     return null;
@@ -128,6 +135,7 @@ const headerRender = ({
           icon={icon || defaultIcon}
           onLeftClick={defaultEvent}
           rightContent={rightContent}
+          className={className}
         >
           {realTitle}
         </NavBar>
