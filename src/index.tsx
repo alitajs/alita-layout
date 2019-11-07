@@ -161,81 +161,84 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   } = tarBar as TarBarProps;
 
   const { hasTabsBar, pageTitle } = checkTabsList(pathname, list);
+  const isTabsApp = list.length > 0;
   const titleListItem = checkTitleList(pathname, titleList);
   const realTitle = titleListItem || pageTitle || documentTitle || '';
 
   return (
     <DocumentTitle title={realTitle}>
       <div style={{ height: '100%' }}>
-        {!hasTabsBar && (
-          <>
-            {headerRender({
-              hasTabsBar,
-              navBar,
-              realTitle,
-              pathname,
-            })}
-            {children}
-          </>
-        )}
-        {hasTabsBar && (
-          <TabBar
-            tabBarPosition={position}
-            unselectedTintColor={color}
-            tintColor={selectedColor}
-            barTintColor={backgroungColor}
+        <div style={{ display: hasTabsBar ? 'none' : 'block', height: '100%' }}>
+          {headerRender({
+            hasTabsBar,
+            navBar,
+            realTitle,
+            pathname,
+          })}
+          {children}
+        </div>
+        {isTabsApp && (
+          <div
+            style={{ display: hasTabsBar ? 'block' : 'none', height: '100%' }}
           >
-            {list.map(item => {
-              return (
-                <TabBar.Item
-                  title={item.text}
-                  icon={
-                    <div
-                      style={{
-                        width: `${item.iconSize || '0.44rem'}`,
-                        height: `${item.iconSize || '0.44rem'}`,
-                        background: `url(${
-                          item.iconPath
-                        }) center center /  ${item.iconSize ||
-                          '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
-                      }}
-                    />
-                  }
-                  selectedIcon={
-                    <div
-                      style={{
-                        width: `${item.iconSize || '0.44rem'}`,
-                        height: `${item.iconSize || '0.44rem'}`,
-                        background: `url(${
-                          item.selectedIconPath
-                        }) center center /  ${item.iconSize ||
-                          '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
-                      }}
-                    />
-                  }
-                  selected={pathname === item.pagePath}
-                  badge={item.badge}
-                  onPress={() => {
-                    if (pathname === item.pagePath) return;
-                    if (item.onPress) {
-                      item.onPress();
-                    } else {
-                      router.push(item.pagePath);
+            <TabBar
+              tabBarPosition={position}
+              unselectedTintColor={color}
+              tintColor={selectedColor}
+              barTintColor={backgroungColor}
+            >
+              {list.map(item => {
+                return (
+                  <TabBar.Item
+                    title={item.text}
+                    icon={
+                      <div
+                        style={{
+                          width: `${item.iconSize || '0.44rem'}`,
+                          height: `${item.iconSize || '0.44rem'}`,
+                          background: `url(${
+                            item.iconPath
+                          }) center center /  ${item.iconSize ||
+                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
+                        }}
+                      />
                     }
-                  }}
-                  key={item.pagePath}
-                >
-                  {headerRender({
-                    hasTabsBar,
-                    navBar,
-                    realTitle,
-                    pathname,
-                  })}
-                  {children}
-                </TabBar.Item>
-              );
-            })}
-          </TabBar>
+                    selectedIcon={
+                      <div
+                        style={{
+                          width: `${item.iconSize || '0.44rem'}`,
+                          height: `${item.iconSize || '0.44rem'}`,
+                          background: `url(${
+                            item.selectedIconPath
+                          }) center center /  ${item.iconSize ||
+                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
+                        }}
+                      />
+                    }
+                    selected={pathname === item.pagePath}
+                    badge={item.badge}
+                    onPress={() => {
+                      if (pathname === item.pagePath) return;
+                      if (item.onPress) {
+                        item.onPress();
+                      } else {
+                        router.push(item.pagePath);
+                      }
+                    }}
+                    key={item.pagePath}
+                  >
+                    {headerRender({
+                      hasTabsBar,
+                      navBar,
+                      realTitle,
+                      pathname,
+                    })}
+                    {children}
+                  </TabBar.Item>
+                );
+              })}
+            </TabBar>
+          </div>
         )}
       </div>
     </DocumentTitle>
