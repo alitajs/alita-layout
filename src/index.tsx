@@ -120,6 +120,7 @@ const headerRender = ({
     icon,
     onLeftClick,
     rightContent,
+    leftContent,
     hideNavBar,
     className,
   } = realNavBar;
@@ -135,6 +136,7 @@ const headerRender = ({
           icon={icon || defaultIcon}
           onLeftClick={defaultEvent}
           rightContent={rightContent}
+          leftContent={leftContent}
           className={className}
         >
           {realTitle}
