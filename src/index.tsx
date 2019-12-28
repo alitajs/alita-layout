@@ -120,6 +120,7 @@ const headerRender = ({
     icon,
     onLeftClick,
     rightContent,
+    leftContent,
     hideNavBar,
     className,
   } = realNavBar;
@@ -129,12 +130,13 @@ const headerRender = ({
   }
   return (
     <>
-      <div style={fixed ? { position: 'absolute', top: 0, width: '100%' } : {}}>
+      <div style={fixed ? { position: 'fixed', top: 0, width: '100%' } : {}}>
         <NavBar
           mode={mode}
           icon={icon || defaultIcon}
           onLeftClick={defaultEvent}
           rightContent={rightContent}
+          leftContent={leftContent}
           className={className}
         >
           {realTitle}
@@ -168,19 +170,19 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   return (
     <DocumentTitle title={realTitle}>
       <div style={{ height: '100%' }}>
-        <div style={{ display: hasTabsBar ? 'none' : 'block', height: '100%' }}>
-          {headerRender({
-            hasTabsBar,
-            navBar,
-            realTitle,
-            pathname,
-          })}
-          {children}
-        </div>
-        {isTabsApp && (
-          <div
-            style={{ display: hasTabsBar ? 'block' : 'none', height: '100%' }}
-          >
+        {!hasTabsBar && (
+          <div style={{ height: '100%' }}>
+            {headerRender({
+              hasTabsBar,
+              navBar,
+              realTitle,
+              pathname,
+            })}
+            {children}
+          </div>
+        )}
+        {isTabsApp && hasTabsBar && (
+          <div style={{ height: '100%' }}>
             <TabBar
               tabBarPosition={position}
               unselectedTintColor={color}
