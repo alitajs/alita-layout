@@ -5,6 +5,16 @@ import withRouter from 'umi/withRouter';
 import * as H from 'history';
 import DocumentTitle from 'react-document-title';
 
+const ONE_REM =
+  parseInt(document.documentElement.style.fontSize || '100', 10) || 100;
+const SCALE = ONE_REM / 100;
+/**
+ * 像素转换
+ * @param {Number} px - 750视觉稿像素
+ * @return {Number} 屏幕上实际像素
+ */
+const px2hd = (px: number): number => Number((px * SCALE).toFixed(1));
+
 export interface NarBarListItem {
   pagePath: string;
   navBar: NavBarProps;
@@ -130,7 +140,11 @@ const headerRender = ({
   }
   return (
     <>
-      <div style={fixed ? { position: 'fixed', top: 0, width: '100%' } : {}}>
+      <div
+        style={
+          fixed ? { position: 'fixed', top: 0, width: '100%', zIndex: 99 } : {}
+        }
+      >
         <NavBar
           mode={mode}
           icon={icon || defaultIcon}
@@ -229,13 +243,21 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                     }}
                     key={item.pagePath}
                   >
-                    {headerRender({
-                      hasTabsBar,
-                      navBar,
-                      realTitle,
-                      pathname,
-                    })}
-                    {children}
+                    <div
+                      style={{
+                        maxHeight:
+                          document.documentElement.clientHeight - px2hd(100),
+                        overflow: 'auto',
+                      }}
+                    >
+                      {headerRender({
+                        hasTabsBar,
+                        navBar,
+                        realTitle,
+                        pathname,
+                      })}
+                      {children}
+                    </div>
                   </TabBar.Item>
                 );
               })}
