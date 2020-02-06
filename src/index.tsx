@@ -31,6 +31,7 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   navList?: NarBarListItem[];
   hideNavBar?: boolean;
   fixed?: boolean;
+  background?: string;
 }
 export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   params: Params;
@@ -105,26 +106,16 @@ const checkTitleList = (pagePath: string, lists: TitleListItem[]): string => {
 };
 
 const headerRender = ({
-  navBar,
+  realNavBar,
   hasTabsBar,
   realTitle,
-  pathname,
 }: {
   hasTabsBar: boolean;
-  navBar: NavBarProps;
+  realNavBar: NavBarProps;
   realTitle: string;
-  pathname: string;
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
-  const { navList, fixed } = navBar;
-  let pageNavBar = null;
-  if (navList) {
-    pageNavBar = checkNavBarList(pathname, navList);
-  }
-  const realNavBar = {
-    ...navBar,
-    ...pageNavBar,
-  };
+  const { fixed } = realNavBar;
   const {
     mode,
     icon,
@@ -175,7 +166,16 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     backgroungColor = '#FFF',
     position,
   } = tarBar as TarBarProps;
-
+  const { navList } = navBar;
+  let pageNavBar = null;
+  if (navList) {
+    pageNavBar = checkNavBarList(pathname, navList);
+  }
+  const realNavBar = {
+    ...navBar,
+    ...pageNavBar,
+  };
+  const { background } = realNavBar;
   const { hasTabsBar, pageTitle } = checkTabsList(pathname, list);
   const isTabsApp = list.length > 0;
   const titleListItem = checkTitleList(pathname, titleList);
@@ -183,86 +183,84 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
 
   return (
     <DocumentTitle title={realTitle}>
-      <div style={{ height: '100%' }}>
+      <div style={{ height: '100vh', background: background || '#FFF' }}>
         {!hasTabsBar && (
-          <div style={{ height: '100%' }}>
+          <>
             {headerRender({
               hasTabsBar,
-              navBar,
+              realNavBar,
               realTitle,
-              pathname,
             })}
             {children}
-          </div>
+          </>
         )}
         {isTabsApp && hasTabsBar && (
-          <div style={{ height: '100%' }}>
-            <TabBar
-              tabBarPosition={position}
-              unselectedTintColor={color}
-              tintColor={selectedColor}
-              barTintColor={backgroungColor}
-            >
-              {list.map(item => {
-                return (
-                  <TabBar.Item
-                    title={item.text}
-                    icon={
-                      <div
-                        style={{
-                          width: `${item.iconSize || '0.44rem'}`,
-                          height: `${item.iconSize || '0.44rem'}`,
-                          background: `url(${
-                            item.iconPath
-                          }) center center /  ${item.iconSize ||
-                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
-                        }}
-                      />
-                    }
-                    selectedIcon={
-                      <div
-                        style={{
-                          width: `${item.iconSize || '0.44rem'}`,
-                          height: `${item.iconSize || '0.44rem'}`,
-                          background: `url(${
-                            item.selectedIconPath
-                          }) center center /  ${item.iconSize ||
-                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
-                        }}
-                      />
-                    }
-                    selected={pathname === item.pagePath}
-                    badge={item.badge}
-                    onPress={() => {
-                      if (pathname === item.pagePath) return;
-                      if (item.onPress) {
-                        item.onPress();
-                      } else {
-                        router.push(item.pagePath);
-                      }
-                    }}
-                    key={item.pagePath}
-                  >
+          <TabBar
+            tabBarPosition={position}
+            unselectedTintColor={color}
+            tintColor={selectedColor}
+            barTintColor={backgroungColor}
+          >
+            {list.map(item => {
+              return (
+                <TabBar.Item
+                  title={item.text}
+                  icon={
                     <div
                       style={{
-                        maxHeight:
-                          document.documentElement.clientHeight - px2hd(100),
-                        overflow: 'auto',
+                        width: `${item.iconSize || '0.44rem'}`,
+                        height: `${item.iconSize || '0.44rem'}`,
+                        background: `url(${
+                          item.iconPath
+                        }) center center /  ${item.iconSize ||
+                          '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
                       }}
-                    >
-                      {headerRender({
-                        hasTabsBar,
-                        navBar,
-                        realTitle,
-                        pathname,
-                      })}
-                      {children}
-                    </div>
-                  </TabBar.Item>
-                );
-              })}
-            </TabBar>
-          </div>
+                    />
+                  }
+                  selectedIcon={
+                    <div
+                      style={{
+                        width: `${item.iconSize || '0.44rem'}`,
+                        height: `${item.iconSize || '0.44rem'}`,
+                        background: `url(${
+                          item.selectedIconPath
+                        }) center center /  ${item.iconSize ||
+                          '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
+                      }}
+                    />
+                  }
+                  selected={pathname === item.pagePath}
+                  badge={item.badge}
+                  onPress={() => {
+                    if (pathname === item.pagePath) return;
+                    if (item.onPress) {
+                      item.onPress();
+                    } else {
+                      router.push(item.pagePath);
+                    }
+                  }}
+                  key={item.pagePath}
+                >
+                  <div
+                    style={{
+                      height:
+                        document.documentElement.clientHeight - px2hd(100),
+                      maxHeight:
+                        document.documentElement.clientHeight - px2hd(100),
+                      overflow: 'auto',
+                    }}
+                  >
+                    {headerRender({
+                      hasTabsBar,
+                      realNavBar,
+                      realTitle,
+                    })}
+                    {children}
+                  </div>
+                </TabBar.Item>
+              );
+            })}
+          </TabBar>
         )}
       </div>
     </DocumentTitle>
