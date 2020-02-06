@@ -77,6 +77,7 @@ render(<BasicLayout />, document.getElementById('root'));
 | navList | 单独设置某些页面的navbar | NarBarListItem | 无 |
 | hideNavBar | 隐藏NavBar，默认有NarBar | boolean | false |
 | fixed | NavBar固定在页面头部 | boolean | false |
+| background | 页面的背景颜色 | string | '#FFF' |
 
 ### navList 参数说明
 
