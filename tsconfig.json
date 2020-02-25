@@ -1,21 +1,29 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "build/dist",
-    "module": "esnext",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
     "sourceMap": true,
-    "baseUrl": ".",
     "jsx": "react",
-    "allowSyntheticDefaultImports": true,
+    "module": "es2015",
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "rootDirs": ["/src", "/test", "/mock", "./typings"],
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "experimentalDecorators": true,
-    "strict": true,
-    "declaration": true
+    "allowJs": true,
+    // "strict": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "exclude": [
     "node_modules",
@@ -29,3 +37,25 @@
     "_test_"
   ]
 }
+
+// {
+//   "compilerOptions": {
+//     "outDir": "build/dist",
+//     "module": "esnext",
+//     "target": "esnext",
+//     "lib": ["esnext", "dom"],
+//     "sourceMap": true,
+//     "baseUrl": ".",
+//     "jsx": "react",
+//     "allowSyntheticDefaultImports": true,
+//     "moduleResolution": "node",
+//     "forceConsistentCasingInFileNames": true,
+//     "noImplicitReturns": true,
+//     "suppressImplicitAnyIndexErrors": true,
+//     "noUnusedLocals": true,
+//     "experimentalDecorators": true,
+//     "strict": true,
+//     "declaration": true
+//   },
+
+// }

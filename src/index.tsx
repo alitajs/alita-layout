@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { TabBar, NavBar, Icon } from 'antd-mobile';
-import router from 'umi/router';
-import withRouter from 'umi/withRouter';
-import * as H from 'history';
+import { withRouter } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
+import { router, LocationState, History, Location } from './history';
 
 const ONE_REM =
   parseInt(document.documentElement.style.fontSize || '100', 10) || 100;
@@ -64,10 +63,10 @@ export interface TarBarProps {
 }
 interface AlitaLayoutProps<
   Params extends { [K in keyof Params]?: string } = {},
-  S = H.LocationState
+  S = LocationState
 > {
-  history: H.History;
-  location: H.Location<S>;
+  history: History;
+  location: Location<S>;
   match: Match<Params>;
   tarBar?: TarBarProps;
   documentTitle?: string;

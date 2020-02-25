@@ -1,20 +1,18 @@
 {
   "name": "@alitajs/alita-layout",
-  "version": "1.1.2",
+  "version": "2.0.0-beta.1",
   "description": "The generic h5 layout in umi uses antd-mobile.",
   "files": [
-    "/lib",
-    "/es"
+    "/dist"
   ],
   "sideEffects": false,
-  "main": "lib/index.js",
-  "module": "es/index.esm.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/src/index.d.ts",
   "homepage": "https://github.com/alitajs/alita-layout#readme",
   "scripts": {
     "start": "cd ./example && alita dev",
-    "build": "umi-lib build",
-    "format-imports": "import-sort --write '**/*.{js,jsx,ts,tsx}'",
+    "build": "father-build",
     "lint": "npm run lint-eslint && npm run lint:ts && npm run lint:style && npm run lint:prettier",
     "lint-eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src",
     "lint-staged": "lint-staged",
@@ -22,10 +20,9 @@
     "lint:fix": "eslint --fix --cache --ext .js,.jsx,.ts,.tsx --format=pretty ./src ./_test_ && npm run lint:style",
     "lint:prettier": "check-prettier lint",
     "lint:style": "stylelint --fix  'src/**/*.less'  --syntax less",
-    "prepublishOnly": "umi-lib build",
+    "prepublishOnly": "father-build",
     "prettier": "node ./scripts/prettier.js",
-    "test": "umi test",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --access public --tag"
   },
   "husky": {
     "hooks": {
@@ -50,7 +47,7 @@
     "history": "^4.9.0",
     "react": "^16.8.6",
     "react-document-title": "^2.0.3",
-    "umi": "2.7.7"
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.7",
@@ -65,9 +62,10 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-intl": "^2.3.17",
     "@types/react-router-dom": "^4.3.2",
+    "@types/vfile-message": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.10.2",
-    "alita": "0.3.6",
+    "alita": "2.0.0-beta.5",
     "babel-eslint": "^10.0.1",
     "babel-plugin-import": "^1.12.0",
     "chalk": "^2.4.2",
@@ -89,18 +87,13 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-unicorn": "^9.0.0",
+    "father-build": "^1.17.2",
     "husky": "^2.3.0",
-    "import-sort-cli": "^6.0.0",
-    "import-sort-parser-babylon": "^6.0.0",
-    "import-sort-parser-typescript": "^6.0.0",
-    "import-sort-style-module": "^6.0.0",
-    "jest-puppeteer": "^4.1.1",
     "jsdom": "^15.0.0",
     "jsdom-global": "^3.0.2",
     "less": "^3.9.0",
     "lint-staged": "^8.1.1",
     "prettier": "^1.17.0",
-    "puppeteer": "^1.12.1",
     "slash2": "^2.0.0",
     "stylelint": "^10.0.1",
     "stylelint-config-css-modules": "^1.3.0",
@@ -109,7 +102,6 @@
     "stylelint-config-standard": "^18.2.0",
     "stylelint-declaration-block-no-ignored-properties": "^2.1.0",
     "stylelint-order": "^3.0.0",
-    "umi-library": "^1.3.0",
     "umi-types": "^0.3.5"
   },
   "engines": {
