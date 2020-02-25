@@ -14,6 +14,9 @@
 The generic h5 layout in umi uses antd-mobile.
 </div>
 
+> umi@2 和 alita@1 请使用1.x版本
+> 2.x版本只支持umi@3和alita@2
+
 ## 使用
 
 ```bash
