@@ -22,7 +22,7 @@
     "lint:style": "stylelint --fix  'src/**/*.less'  --syntax less",
     "prepublishOnly": "father-build",
     "prettier": "node ./scripts/prettier.js",
-    "publish": "npm publish --access public --tag"
+    "publish": "npm publish --access public --tag next"
   },
   "husky": {
     "hooks": {
