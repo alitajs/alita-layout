@@ -14,7 +14,7 @@ const SCALE = ONE_REM / 100;
  */
 const px2hd = (px: number): number => Number((px * SCALE).toFixed(1));
 
-export interface NarBarListItem {
+export interface NavBarListItem {
   pagePath: string;
   navBar: NavBarProps;
 }
@@ -27,10 +27,11 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
   onLeftClick?: React.MouseEventHandler<HTMLDivElement>;
-  navList?: NarBarListItem[];
+  navList?: NavBarListItem[];
   hideNavBar?: boolean;
   fixed?: boolean;
-  background?: string;
+  pageTitle?: string;
+  pageBackground?: string;
 }
 export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
   params: Params;
@@ -53,7 +54,7 @@ export interface TitleListItem {
   pagePath: string;
   title: string;
 }
-export interface TarBarProps {
+export interface TabBarProps {
   list: TabBarListItem[];
   color?: string;
   selectedColor?: string;
@@ -61,21 +62,21 @@ export interface TarBarProps {
   position?: 'bottom' | 'top';
   borderStyle?: string;
 }
-interface AlitaLayoutProps<
+export interface AlitaLayoutProps<
   Params extends { [K in keyof Params]?: string } = {},
   S = LocationState
 > {
   history: History;
   location: Location<S>;
   match: Match<Params>;
-  tarBar?: TarBarProps;
+  tabBar?: TabBarProps;
   documentTitle?: string;
   titleList?: TitleListItem[];
   navBar?: NavBarProps;
 }
 const checkNavBarList = (
   pagePath: string,
-  lists: NarBarListItem[],
+  lists: NavBarListItem[],
 ): NavBarProps | null => {
   const page = lists.filter(
     item => item.pagePath === pagePath && !!item.navBar,
@@ -114,8 +115,8 @@ const headerRender = ({
   realTitle: string;
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
-  const { fixed } = realNavBar;
   const {
+    fixed,
     mode,
     icon,
     onLeftClick,
@@ -123,6 +124,7 @@ const headerRender = ({
     leftContent,
     hideNavBar,
     className,
+    pageTitle,
   } = realNavBar;
   const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
   if (hideNavBar === true) {
@@ -143,7 +145,7 @@ const headerRender = ({
           leftContent={leftContent}
           className={className}
         >
-          {realTitle}
+          {pageTitle || realTitle}
         </NavBar>
       </div>
       {fixed && <div style={{ height: '0.9rem' }}></div>}
@@ -153,7 +155,7 @@ const headerRender = ({
 const AlitaLayout: FC<AlitaLayoutProps> = ({
   children,
   location: { pathname },
-  tarBar = {},
+  tabBar = {},
   documentTitle,
   titleList = [],
   navBar = {},
@@ -164,7 +166,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     selectedColor,
     backgroungColor = '#FFF',
     position,
-  } = tarBar as TarBarProps;
+  } = tabBar as TabBarProps;
   const { navList } = navBar;
   let pageNavBar = null;
   if (navList) {
@@ -174,7 +176,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     ...navBar,
     ...pageNavBar,
   };
-  const { background } = realNavBar;
+  const { pageBackground } = realNavBar;
   const { hasTabsBar, pageTitle } = checkTabsList(pathname, list);
   const isTabsApp = list.length > 0;
   const titleListItem = checkTitleList(pathname, titleList);
@@ -182,7 +184,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
 
   return (
     <DocumentTitle title={realTitle}>
-      <div style={{ height: '100vh', background: background || '#FFF' }}>
+      <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
         {!hasTabsBar && (
           <>
             {headerRender({
