@@ -22,7 +22,8 @@
     "allowJs": true,
     // "strict": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/.umi/*"]
     }
   },
   "exclude": [

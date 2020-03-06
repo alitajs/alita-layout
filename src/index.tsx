@@ -133,6 +133,7 @@ const headerRender = ({
   return (
     <>
       <div
+        className="alita-layout-head"
         style={
           fixed ? { position: 'fixed', top: 0, width: '100%', zIndex: 99 } : {}
         }
@@ -185,22 +186,21 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   return (
     <DocumentTitle title={realTitle}>
       <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
-        {!hasTabsBar && (
-          <>
-            {headerRender({
-              hasTabsBar,
-              realNavBar,
-              realTitle,
-            })}
-            {children}
-          </>
-        )}
-        {isTabsApp && hasTabsBar && (
+        <div hidden={hasTabsBar}>
+          {headerRender({
+            hasTabsBar,
+            realNavBar,
+            realTitle,
+          })}
+          {children}
+        </div>
+        {isTabsApp && (
           <TabBar
             tabBarPosition={position}
             unselectedTintColor={color}
             tintColor={selectedColor}
             barTintColor={backgroungColor}
+            hidden={!hasTabsBar}
           >
             {list.map(item => {
               return (

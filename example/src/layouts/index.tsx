@@ -4,7 +4,7 @@ import home from '../assets/home.png';
 import home1 from '../assets/home1.png';
 import mine from '../assets/mine.png';
 import mine1 from '../assets/mine1.png';
-import AlitaLayout, { TarBarProps, NavBarProps } from '../../../src/index';
+import AlitaLayout, { TabBarProps, NavBarProps } from '../../../src/index';
 
 const BasicLayout: React.FC = props => {
   const { children } = props;
@@ -34,7 +34,7 @@ const BasicLayout: React.FC = props => {
       title: '列表页',
     },
   ];
-  const tarBar: TarBarProps = {
+  const tarBar: TabBarProps = {
     color: '#bfbfbf',
     selectedColor: '#F9DD4A',
     borderStyle: 'white',
