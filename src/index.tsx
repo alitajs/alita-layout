@@ -186,21 +186,22 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   return (
     <DocumentTitle title={realTitle}>
       <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
-        <div hidden={hasTabsBar}>
-          {headerRender({
-            hasTabsBar,
-            realNavBar,
-            realTitle,
-          })}
-          {children}
-        </div>
-        {isTabsApp && (
+        {!hasTabsBar && (
+          <>
+            {headerRender({
+              hasTabsBar,
+              realNavBar,
+              realTitle,
+            })}
+            {children}
+          </>
+        )}
+        {isTabsApp && hasTabsBar && (
           <TabBar
             tabBarPosition={position}
             unselectedTintColor={color}
             tintColor={selectedColor}
             barTintColor={backgroungColor}
-            hidden={!hasTabsBar}
           >
             {list.map(item => {
               return (
