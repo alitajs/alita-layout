@@ -150,7 +150,9 @@ const headerRender = ({
           {pageTitle || realTitle}
         </NavBar>
       </div>
-      {fixed && <div style={{ height: '0.9rem' }}></div>}
+      {fixed && (
+        <div style={{ height: '0.9rem' }} className="alita-layout-fixed"></div>
+      )}
     </>
   );
 };
