@@ -4,15 +4,17 @@ import { withRouter } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 import { router, LocationState, History, Location } from './history';
 
-const ONE_REM =
-  parseInt(document.documentElement.style.fontSize || '100', 10) || 100;
-const SCALE = ONE_REM / 100;
 /**
  * 像素转换
  * @param {Number} px - 750视觉稿像素
  * @return {Number} 屏幕上实际像素
  */
-const px2hd = (px: number): number => Number((px * SCALE).toFixed(1));
+const px2hd = (px: number): number => {
+  const ONE_REM =
+    parseInt(document.documentElement.style.fontSize || '100', 10) || 100;
+  const SCALE = ONE_REM / 100;
+  return Number((px * SCALE).toFixed(1));
+};
 
 export interface NavBarListItem {
   pagePath: string;
@@ -206,32 +208,26 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   return (
     <DocumentTitle title={realTitle}>
       <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
-        {!hasTabsBar && (
-          <>
-            {headerRender({
-              hasTabsBar,
-              realNavBar,
-              realTitle,
-            })}
-            {children}
-          </>
-        )}
+        <div
+          style={{
+            height:
+              document.documentElement.clientHeight -
+              px2hd(hasTabsBar ? 100 : 0),
+            maxHeight:
+              document.documentElement.clientHeight -
+              px2hd(hasTabsBar ? 100 : 0),
+            overflow: 'auto',
+          }}
+        >
+          {headerRender({
+            hasTabsBar,
+            realNavBar,
+            realTitle,
+          })}
+          {children}
+        </div>
         {isTabsApp && hasTabsBar && (
           <>
-            <div
-              style={{
-                height: document.documentElement.clientHeight - px2hd(100),
-                maxHeight: document.documentElement.clientHeight - px2hd(100),
-                overflow: 'auto',
-              }}
-            >
-              {headerRender({
-                hasTabsBar,
-                realNavBar,
-                realTitle,
-              })}
-              {children}
-            </div>
             <TabBar
               tabBarPosition={position}
               unselectedTintColor={color}
