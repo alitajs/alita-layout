@@ -63,6 +63,7 @@ export interface TabBarProps {
   backgroungColor?: string;
   position?: 'bottom' | 'top';
   borderStyle?: string;
+  tabsGroup?: string[][];
 }
 export interface AlitaLayoutProps<
   Params extends { [K in keyof Params]?: string } = {},
@@ -91,13 +92,32 @@ const checkNavBarList = (
 const checkTabsList = (
   pagePath: string,
   lists: TabBarListItem[],
-): { hasTabsBar: boolean; pageTitle?: string } => {
+  tabsGrouping?: string[][],
+): { hasTabsBar: boolean; pageTitle?: string; realList: TabBarListItem[] } => {
+  let realList = lists;
+  let realGroup;
   const page = lists.filter(
     (item: { pagePath: string }) => item.pagePath === pagePath,
   );
+
+  if (tabsGrouping && tabsGrouping.length > 0) {
+    tabsGrouping.forEach(tabsGroup => {
+      if (page[0] && tabsGroup.includes(page[0].pagePath)) {
+        realGroup = tabsGroup;
+      }
+    });
+  }
+
+  if (realGroup) {
+    realList = lists.filter((item: { pagePath: string }) =>
+      realGroup.includes(item.pagePath),
+    );
+  }
+
   return {
     hasTabsBar: page && page.length > 0,
     pageTitle: page[0] ? page[0].title || page[0].text : '',
+    realList,
   };
 };
 
@@ -189,6 +209,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     selectedColor,
     backgroungColor = '#FFF',
     position,
+    tabsGroup = [],
   } = tabBar as TabBarProps;
   const { navList } = navBar;
   let pageNavBar = null;
@@ -200,7 +221,11 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
     ...pageNavBar,
   };
   const { pageBackground } = realNavBar;
-  const { hasTabsBar, pageTitle } = checkTabsList(pathname, list);
+  const { hasTabsBar, pageTitle, realList } = checkTabsList(
+    pathname,
+    list,
+    tabsGroup,
+  );
   const isTabsApp = list.length > 0;
   const titleListItem = checkTitleList(pathname, titleList);
   const realTitle = titleListItem || pageTitle || documentTitle || '';
@@ -235,7 +260,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
               barTintColor={backgroungColor}
               noRenderContent
             >
-              {list.map(item => {
+              {realList.map(item => {
                 return (
                   <TabBar.Item
                     title={item.text}
