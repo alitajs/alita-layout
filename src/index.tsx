@@ -232,7 +232,13 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
 
   return (
     <DocumentTitle title={realTitle}>
-      <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
+      <div
+        style={{
+          height:
+            document.documentElement.clientHeight - px2hd(hasTabsBar ? 100 : 0),
+          background: pageBackground || '#FFF',
+        }}
+      >
         <div
           style={{
             height:
