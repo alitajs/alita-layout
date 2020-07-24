@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { TabBar, NavBar, Icon } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
-import { router, LocationState, History, Location } from './history';
+import { LocationState, History, Location } from 'history';
 
 /**
  * 像素转换
@@ -49,7 +49,7 @@ export interface TabBarListItem {
   badge?: string;
   iconPath: string;
   selectedIconPath: string;
-  onPress?: () => {};
+  onPress?: () => void;
   title?: string;
 }
 export interface TitleListItem {
@@ -132,10 +132,12 @@ const headerRender = ({
   realNavBar,
   hasTabsBar,
   realTitle,
+  history,
 }: {
   hasTabsBar: boolean;
   realNavBar: NavBarProps;
   realTitle: string;
+  history: History;
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
   const {
@@ -149,7 +151,7 @@ const headerRender = ({
     className,
     pageTitle,
   } = realNavBar;
-  const defaultEvent = onLeftClick || (!hasTabsBar ? router.goBack : () => {});
+  const defaultEvent = onLeftClick || (!hasTabsBar ? history.goBack : () => {});
   if (hideNavBar === true) {
     return null;
   }
@@ -201,6 +203,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   tabBar = {},
   documentTitle,
   titleList = [],
+  history,
   navBar = {},
 }) => {
   const {
@@ -248,6 +251,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
             hasTabsBar,
             realNavBar,
             realTitle,
+            history,
           })}
           {children}
         </div>
@@ -295,7 +299,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                       if (item.onPress) {
                         item.onPress();
                       } else {
-                        router.push(item.pagePath);
+                        history.push(item.pagePath);
                       }
                     }}
                     key={item.pagePath}
