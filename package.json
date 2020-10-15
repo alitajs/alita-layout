@@ -1,6 +1,6 @@
 {
   "name": "@alitajs/alita-layout",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "The generic h5 layout in umi uses antd-mobile.",
   "files": [
     "/dist"

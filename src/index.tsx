@@ -76,6 +76,7 @@ export interface AlitaLayoutProps<
   documentTitle?: string;
   titleList?: TitleListItem[];
   navBar?: NavBarProps;
+  hideNavBar?: boolean;
 }
 const checkNavBarList = (
   pagePath: string,
@@ -205,6 +206,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   titleList = [],
   history,
   navBar = {},
+  hideNavBar = false,
 }) => {
   const {
     list = [],
@@ -247,12 +249,13 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
             overflow: 'auto',
           }}
         >
-          {headerRender({
-            hasTabsBar,
-            realNavBar,
-            realTitle,
-            history,
-          })}
+          {!hideNavBar &&
+            headerRender({
+              hasTabsBar,
+              realNavBar,
+              realTitle,
+              history,
+            })}
           {children}
         </div>
         {isTabsApp && hasTabsBar && (
