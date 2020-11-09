@@ -25,6 +25,7 @@ const BasicLayout: React.FC = props => {
       iconPath: mine,
       iconSize: '',
       badge: '',
+
       selectedIconPath: mine1,
     },
   ];
@@ -34,7 +35,7 @@ const BasicLayout: React.FC = props => {
       title: '列表页',
     },
   ];
-  const tarBar: TabBarProps = {
+  const tabBar: TabBarProps = {
     color: '#bfbfbf',
     selectedColor: '#F9DD4A',
     borderStyle: 'white',
@@ -43,7 +44,7 @@ const BasicLayout: React.FC = props => {
     list,
   };
   const layoutProps = {
-    tarBar,
+    tabBar,
     documentTitle: 'alita demo',
     children,
     titleList,
@@ -60,6 +61,7 @@ const BasicLayout: React.FC = props => {
           pagePath: '/home',
           navBar: {
             mode: 'dark',
+            pageBackground: 'red',
             icon: <Icon type="left" />,
             onLeftClick: () => console.log('onLeftClick'),
           },

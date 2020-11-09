@@ -114,7 +114,7 @@ const checkTabsList = (
       realGroup.includes(item.pagePath),
     );
   }
-
+  console.log(lists);
   return {
     hasTabsBar: page && page.length > 0,
     pageTitle: page[0] ? page[0].title || page[0].text : '',
@@ -237,29 +237,31 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
 
   return (
     <DocumentTitle title={realTitle}>
-      <div style={{ height: '100vh', background: pageBackground || '#FFF' }}>
-        <div
-          style={{
-            height:
-              document.documentElement.clientHeight -
-              px2hd(hasTabsBar ? 100 : 0),
-            maxHeight:
-              document.documentElement.clientHeight -
-              px2hd(hasTabsBar ? 100 : 0),
-            overflow: 'auto',
-          }}
-        >
-          {!hideNavBar &&
-            headerRender({
-              hasTabsBar,
-              realNavBar,
-              realTitle,
-              history,
-            })}
-          {children}
-        </div>
+      <div style={{ minHeight: '100vh', background: pageBackground || '#FFF' }}>
+        {!hideNavBar &&
+          headerRender({
+            hasTabsBar,
+            realNavBar,
+            realTitle,
+            history,
+          })}
+        {children}
+        {hasTabsBar && (
+          <div
+            style={{
+              height: px2hd(100),
+            }}
+          ></div>
+        )}
         {isTabsApp && hasTabsBar && (
-          <>
+          <div
+            style={{
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
             <TabBar
               tabBarPosition={position}
               unselectedTintColor={color}
@@ -310,7 +312,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                 );
               })}
             </TabBar>
-          </>
+          </div>
         )}
       </div>
     </DocumentTitle>
