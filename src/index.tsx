@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { TabBar, NavBar, Icon } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
@@ -28,7 +28,7 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   icon?: React.ReactNode;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
-  onLeftClick?: React.MouseEventHandler<HTMLDivElement>;
+  onLeftClick?: (history: History) => void;
   navList?: NavBarListItem[];
   hideNavBar?: boolean;
   fixed?: boolean;
@@ -114,7 +114,7 @@ const checkTabsList = (
       realGroup.includes(item.pagePath),
     );
   }
-  console.log(lists);
+
   return {
     hasTabsBar: page && page.length > 0,
     pageTitle: page[0] ? page[0].title || page[0].text : '',
@@ -159,15 +159,18 @@ const headerRender = ({
   return (
     <>
       <div
-        className="alita-layout-head"
-        style={
-          fixed ? { position: 'fixed', top: 0, width: '100%', zIndex: 99 } : {}
-        }
+        className="alita-layout-head am-navbar am-navbar-dark"
+        style={{
+          height: 'auto',
+          flexShrink: 0,
+          paddingTop: 'var(--alita-safe-area-top)',
+        }}
       >
         <NavBar
           mode={mode}
+          style={{ width: '100%' }}
           icon={icon || defaultIcon}
-          onLeftClick={defaultEvent}
+          onLeftClick={() => defaultEvent(history)}
           rightContent={rightContent}
           leftContent={leftContent}
           className={className}
@@ -175,14 +178,12 @@ const headerRender = ({
           {pageTitle || realTitle}
         </NavBar>
       </div>
-      {fixed && (
-        <div style={{ height: '0.9rem' }} className="alita-layout-fixed"></div>
-      )}
     </>
   );
 };
 const styleInject = (): void => {
-  const css = '.am-tab-bar {\n  height: auto !important;\n}';
+  const css =
+    '.am-tab-bar {\n  padding-bottom:var(--alita-safe-area-bottom);\n} html{--alita-safe-area-top: env(safe-area-inset-top);--alita-safe-area-bottom: env(safe-area-inset-bottom);--alita-safe-area-left: env(safe-area-inset-left);--alita-safe-area-right: env(safe-area-inset-right);}';
   if (typeof document === 'undefined') {
     return;
   }
@@ -235,33 +236,34 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   const titleListItem = checkTitleList(pathname, titleList);
   const realTitle = titleListItem || pageTitle || documentTitle || '';
 
+  const headFixed = realNavBar.fixed;
   return (
     <DocumentTitle title={realTitle}>
-      <div style={{ minHeight: '100vh', background: pageBackground || '#FFF' }}>
+      <div
+        className="alita-page"
+        style={{ background: pageBackground || '#FFF' }}
+      >
         {!hideNavBar &&
+          headFixed &&
           headerRender({
             hasTabsBar,
             realNavBar,
             realTitle,
             history,
           })}
-        {children}
-        {hasTabsBar && (
-          <div
-            style={{
-              height: px2hd(100),
-            }}
-          ></div>
-        )}
+        <div style={{ flex: '1 1 0%', overflow: 'auto' }}>
+          {!hideNavBar &&
+            !headFixed &&
+            headerRender({
+              hasTabsBar,
+              realNavBar,
+              realTitle,
+              history,
+            })}
+          {children}
+        </div>
         {isTabsApp && hasTabsBar && (
-          <div
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-            }}
-          >
+          <div className="alita-layout-footer" style={{ flexShrink: 0 }}>
             <TabBar
               tabBarPosition={position}
               unselectedTintColor={color}
@@ -276,24 +278,24 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                     icon={
                       <div
                         style={{
-                          width: `${item.iconSize || '0.44rem'}`,
-                          height: `${item.iconSize || '0.44rem'}`,
+                          width: `${item.iconSize || '0.38rem'}`,
+                          height: `${item.iconSize || '0.38rem'}`,
                           background: `url(${
                             item.iconPath
                           }) center center /  ${item.iconSize ||
-                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
+                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
                         }}
                       />
                     }
                     selectedIcon={
                       <div
                         style={{
-                          width: `${item.iconSize || '0.44rem'}`,
-                          height: `${item.iconSize || '0.44rem'}`,
+                          width: `${item.iconSize || '0.38rem'}`,
+                          height: `${item.iconSize || '0.38rem'}`,
                           background: `url(${
                             item.selectedIconPath
                           }) center center /  ${item.iconSize ||
-                            '0.44rem'} ${item.iconSize || '0.44rem'} no-repeat`,
+                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
                         }}
                       />
                     }
