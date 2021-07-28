@@ -4,18 +4,6 @@ import { withRouter } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 import { LocationState, History, Location } from 'history';
 
-/**
- * 像素转换
- * @param {Number} px - 750视觉稿像素
- * @return {Number} 屏幕上实际像素
- */
-const px2hd = (px: number): number => {
-  const ONE_REM =
-    parseInt(document.documentElement.style.fontSize || '100', 10) || 100;
-  const SCALE = ONE_REM / 100;
-  return Number((px * SCALE).toFixed(1));
-};
-
 export interface NavBarListItem {
   pagePath: string;
   navBar: NavBarProps;
@@ -142,7 +130,6 @@ const headerRender = ({
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
   const {
-    fixed,
     mode,
     icon,
     onLeftClick,
@@ -236,7 +223,14 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   const titleListItem = checkTitleList(pathname, titleList);
   const realTitle = titleListItem || pageTitle || documentTitle || '';
 
+  // 头部永久固定，部分页面需要跟随页面流滚动，可以选择隐藏 NavBar，在页面中手动添加
   const headFixed = realNavBar.fixed;
+  if (headFixed) {
+    console.warn(
+      'navbar fixed 设置已被移除，请通过在页面中手动添加的方式实现。有疑问请联系微信yu_xiaohu',
+    );
+  }
+  //
   return (
     <DocumentTitle title={realTitle}>
       <div
@@ -244,22 +238,21 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
         style={{ background: pageBackground || '#FFF' }}
       >
         {!hideNavBar &&
-          headFixed &&
           headerRender({
             hasTabsBar,
             realNavBar,
             realTitle,
             history,
           })}
-        <div style={{ flex: '1 1 0%', overflow: 'auto' }}>
-          {!hideNavBar &&
-            !headFixed &&
-            headerRender({
-              hasTabsBar,
-              realNavBar,
-              realTitle,
-              history,
-            })}
+        <div
+          className="alita-layout-content"
+          style={{
+            flex: '1 1 0%',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            position: 'relative',
+          }}
+        >
           {children}
         </div>
         {isTabsApp && hasTabsBar && (
