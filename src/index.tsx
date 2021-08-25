@@ -1,7 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { TabBar, NavBar, Icon } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
-import DocumentTitle from 'react-document-title';
 import { LocationState, History, Location } from 'history';
 
 export interface NavBarListItem {
@@ -52,6 +51,18 @@ export interface TabBarProps {
   position?: 'bottom' | 'top';
   borderStyle?: string;
   tabsGroup?: string[][];
+}
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function useDocumentTitle(title: string) {
+  useEffect(() => {
+    const originalTitle = document.title;
+    document.title = title;
+
+    return () => {
+      document.title = originalTitle;
+    };
+  }, [title]);
 }
 export interface AlitaLayoutProps<
   Params extends { [K in keyof Params]?: string } = {},
@@ -230,87 +241,88 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
       'navbar fixed 设置已被移除，请通过在页面中手动添加的方式实现。有疑问请联系微信yu_xiaohu',
     );
   }
+  useDocumentTitle(realTitle);
   //
   return (
-    <DocumentTitle title={realTitle}>
+    // <DocumentTitle title={realTitle}>
+    <div
+      className="alita-page"
+      style={{ background: pageBackground || '#FFF' }}
+    >
+      {!hideNavBar &&
+        headerRender({
+          hasTabsBar,
+          realNavBar,
+          realTitle,
+          history,
+        })}
       <div
-        className="alita-page"
-        style={{ background: pageBackground || '#FFF' }}
+        className="alita-layout-content"
+        style={{
+          flex: '1 1 0%',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+          position: 'relative',
+        }}
       >
-        {!hideNavBar &&
-          headerRender({
-            hasTabsBar,
-            realNavBar,
-            realTitle,
-            history,
-          })}
-        <div
-          className="alita-layout-content"
-          style={{
-            flex: '1 1 0%',
-            overflowX: 'hidden',
-            overflowY: 'auto',
-            position: 'relative',
-          }}
-        >
-          {children}
-        </div>
-        {isTabsApp && hasTabsBar && (
-          <div className="alita-layout-footer" style={{ flexShrink: 0 }}>
-            <TabBar
-              tabBarPosition={position}
-              unselectedTintColor={color}
-              tintColor={selectedColor}
-              barTintColor={backgroungColor}
-              noRenderContent
-            >
-              {realList.map(item => {
-                return (
-                  <TabBar.Item
-                    title={item.text}
-                    icon={
-                      <div
-                        style={{
-                          width: `${item.iconSize || '0.38rem'}`,
-                          height: `${item.iconSize || '0.38rem'}`,
-                          background: `url(${
-                            item.iconPath
-                          }) center center /  ${item.iconSize ||
-                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
-                        }}
-                      />
-                    }
-                    selectedIcon={
-                      <div
-                        style={{
-                          width: `${item.iconSize || '0.38rem'}`,
-                          height: `${item.iconSize || '0.38rem'}`,
-                          background: `url(${
-                            item.selectedIconPath
-                          }) center center /  ${item.iconSize ||
-                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
-                        }}
-                      />
-                    }
-                    selected={pathname === item.pagePath}
-                    badge={item.badge}
-                    onPress={() => {
-                      if (pathname === item.pagePath) return;
-                      if (item.onPress) {
-                        item.onPress();
-                      } else {
-                        history.push(item.pagePath);
-                      }
-                    }}
-                    key={item.pagePath}
-                  ></TabBar.Item>
-                );
-              })}
-            </TabBar>
-          </div>
-        )}
+        {children}
       </div>
-    </DocumentTitle>
+      {isTabsApp && hasTabsBar && (
+        <div className="alita-layout-footer" style={{ flexShrink: 0 }}>
+          <TabBar
+            tabBarPosition={position}
+            unselectedTintColor={color}
+            tintColor={selectedColor}
+            barTintColor={backgroungColor}
+            noRenderContent
+          >
+            {realList.map(item => {
+              return (
+                <TabBar.Item
+                  title={item.text}
+                  icon={
+                    <div
+                      style={{
+                        width: `${item.iconSize || '0.38rem'}`,
+                        height: `${item.iconSize || '0.38rem'}`,
+                        background: `url(${
+                          item.iconPath
+                        }) center center /  ${item.iconSize ||
+                          '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
+                      }}
+                    />
+                  }
+                  selectedIcon={
+                    <div
+                      style={{
+                        width: `${item.iconSize || '0.38rem'}`,
+                        height: `${item.iconSize || '0.38rem'}`,
+                        background: `url(${
+                          item.selectedIconPath
+                        }) center center /  ${item.iconSize ||
+                          '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
+                      }}
+                    />
+                  }
+                  selected={pathname === item.pagePath}
+                  badge={item.badge}
+                  onPress={() => {
+                    if (pathname === item.pagePath) return;
+                    if (item.onPress) {
+                      item.onPress();
+                    } else {
+                      history.push(item.pagePath);
+                    }
+                  }}
+                  key={item.pagePath}
+                ></TabBar.Item>
+              );
+            })}
+          </TabBar>
+        </div>
+      )}
+    </div>
+    // </DocumentTitle>
   );
 };
 

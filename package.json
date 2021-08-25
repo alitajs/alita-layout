@@ -1,11 +1,10 @@
 {
   "name": "@alitajs/alita-layout",
-  "version": "2.4.7",
+  "version": "2.4.8",
   "description": "The generic h5 layout in umi uses antd-mobile.",
   "files": [
     "/dist"
   ],
-  "sideEffects": false,
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/src/index.d.ts",
@@ -46,7 +45,6 @@
     "antd-mobile": "^2.2.14",
     "history": "^4.9.0",
     "react": "^16.8.6",
-    "react-document-title": "^2.0.3",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
