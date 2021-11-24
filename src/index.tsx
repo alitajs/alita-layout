@@ -283,6 +283,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                   icon={
                     <div
                       style={{
+                        display: item.iconPath ? 'block' : 'none',
                         width: `${item.iconSize || '0.38rem'}`,
                         height: `${item.iconSize || '0.38rem'}`,
                         background: `url(${
@@ -295,6 +296,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                   selectedIcon={
                     <div
                       style={{
+                        display: item.selectedIconPath ? 'block' : 'none',
                         width: `${item.iconSize || '0.38rem'}`,
                         height: `${item.iconSize || '0.38rem'}`,
                         background: `url(${
