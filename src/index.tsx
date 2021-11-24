@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { TabBar, NavBar, Icon } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
 import { LocationState, History, Location } from 'history';
+import { TabIcon } from 'antd-mobile/lib/tab-bar/PropsType';
 
 export interface NavBarListItem {
   pagePath: string;
@@ -31,13 +32,15 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
 
 export interface TabBarListItem {
   pagePath: string;
-  text: string;
+  text?: string;
   iconSize?: string;
   badge?: string;
-  iconPath: string;
-  selectedIconPath: string;
+  iconPath?: string;
+  selectedIconPath?: string;
   onPress?: () => void;
   title?: string;
+  icon?: TabIcon;
+  selectedIcon?: TabIcon;
 }
 export interface TitleListItem {
   pagePath: string;
@@ -281,28 +284,34 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                 <TabBar.Item
                   title={item.text}
                   icon={
-                    <div
-                      style={{
-                        width: `${item.iconSize || '0.38rem'}`,
-                        height: `${item.iconSize || '0.38rem'}`,
-                        background: `url(${
-                          item.iconPath
-                        }) center center /  ${item.iconSize ||
-                          '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
-                      }}
-                    />
+                    item?.icon || (
+                      <div
+                        style={{
+                          display: item?.iconPath ? 'block' : 'none',
+                          width: `${item.iconSize || '0.38rem'}`,
+                          height: `${item.iconSize || '0.38rem'}`,
+                          background: `url(${
+                            item.iconPath
+                          }) center center /  ${item.iconSize ||
+                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
+                        }}
+                      />
+                    )
                   }
                   selectedIcon={
-                    <div
-                      style={{
-                        width: `${item.iconSize || '0.38rem'}`,
-                        height: `${item.iconSize || '0.38rem'}`,
-                        background: `url(${
-                          item.selectedIconPath
-                        }) center center /  ${item.iconSize ||
-                          '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
-                      }}
-                    />
+                    item?.selectedIcon || (
+                      <div
+                        style={{
+                          display: item?.selectedIconPath ? 'block' : 'none',
+                          width: `${item.iconSize || '0.38rem'}`,
+                          height: `${item.iconSize || '0.38rem'}`,
+                          background: `url(${
+                            item.selectedIconPath
+                          }) center center /  ${item.iconSize ||
+                            '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
+                        }}
+                      />
+                    )
                   }
                   selected={pathname === item.pagePath}
                   badge={item.badge}
