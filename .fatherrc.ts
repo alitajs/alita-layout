@@ -9,11 +9,11 @@ export default {
   //     'isFragment',
   //   ]
   // },
-  extraBabelPlugins: [
-    [
-      'babel-plugin-import',
-      { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
-      'antd-mobile',
-    ],
-  ],
+  // extraBabelPlugins: [
+  //   [
+  //     'babel-plugin-import',
+  //     { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
+  //     'antd-mobile',
+  //   ],
+  // ],
 };

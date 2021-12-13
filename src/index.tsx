@@ -1,8 +1,16 @@
 import React, { FC, useEffect } from 'react';
-import { TabBar, NavBar, Icon } from 'antd-mobile';
-import { withRouter } from 'react-router-dom';
-import { LocationState, History, Location } from 'history';
-import { TabIcon } from 'antd-mobile/lib/tab-bar/PropsType';
+// import { TabBar, NavBar, Icon } from 'antd-mobile';
+import TabBar from 'antd-mobile-v2/es/tab-bar';
+import NavBar from 'antd-mobile-v2/es/nav-bar';
+import Icon from 'antd-mobile-v2/es/icon';
+import { TabIcon } from 'antd-mobile-v2/es/tab-bar/PropsType';
+import {
+  useLocation,
+  useNavigate
+} from "react-router-dom";
+import 'antd-mobile-v2/es/tab-bar/style';
+import 'antd-mobile-v2/es/nav-bar/style';
+import 'antd-mobile-v2/es/icon/style';
 
 export interface NavBarListItem {
   pagePath: string;
@@ -16,7 +24,7 @@ export interface NavBarProps extends React.HTMLProps<HTMLDivElement> {
   icon?: React.ReactNode;
   leftContent?: React.ReactNode;
   rightContent?: React.ReactNode;
-  onLeftClick?: (history: History) => void;
+  onLeftClick?: (navigate) => void;
   navList?: NavBarListItem[];
   hideNavBar?: boolean;
   fixed?: boolean;
@@ -69,10 +77,7 @@ function useDocumentTitle(title: string) {
 }
 export interface AlitaLayoutProps<
   Params extends { [K in keyof Params]?: string } = {},
-  S = LocationState
-> {
-  history: History;
-  location: Location<S>;
+  > {
   match: Match<Params>;
   tabBar?: TabBarProps;
   documentTitle?: string;
@@ -135,12 +140,12 @@ const headerRender = ({
   realNavBar,
   hasTabsBar,
   realTitle,
-  history,
+  navigate,
 }: {
   hasTabsBar: boolean;
   realNavBar: NavBarProps;
   realTitle: string;
-  history: History;
+  navigate: any;
 }): React.ReactNode => {
   const defaultIcon = hasTabsBar ? null : <Icon type="left" />;
   const {
@@ -153,7 +158,7 @@ const headerRender = ({
     className,
     pageTitle,
   } = realNavBar;
-  const defaultEvent = onLeftClick || (!hasTabsBar ? history.goBack : () => {});
+  const defaultEvent = onLeftClick || (!hasTabsBar ? navigate.goBack : () => { });
   if (hideNavBar === true) {
     return null;
   }
@@ -171,7 +176,7 @@ const headerRender = ({
           mode={mode}
           style={{ width: '100%' }}
           icon={icon || defaultIcon}
-          onLeftClick={() => defaultEvent(history)}
+          onLeftClick={() => defaultEvent(navigate)}
           rightContent={rightContent}
           leftContent={leftContent}
           className={className}
@@ -202,14 +207,14 @@ const styleInject = (): void => {
 styleInject();
 const AlitaLayout: FC<AlitaLayoutProps> = ({
   children,
-  location: { pathname },
   tabBar = {},
   documentTitle,
   titleList = [],
-  history,
   navBar = {},
   hideNavBar = false,
 }) => {
+  const { pathname } = useLocation();
+  const navigate= useNavigate();
   const {
     list = [],
     color,
@@ -257,7 +262,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
           hasTabsBar,
           realNavBar,
           realTitle,
-          history,
+          navigate,
         })}
       <div
         className="alita-layout-content"
@@ -290,9 +295,8 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                           display: item?.iconPath ? 'block' : 'none',
                           width: `${item.iconSize || '0.38rem'}`,
                           height: `${item.iconSize || '0.38rem'}`,
-                          background: `url(${
-                            item.iconPath
-                          }) center center /  ${item.iconSize ||
+                          background: `url(${item.iconPath
+                            }) center center /  ${item.iconSize ||
                             '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
                         }}
                       />
@@ -305,9 +309,8 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                           display: item?.selectedIconPath ? 'block' : 'none',
                           width: `${item.iconSize || '0.38rem'}`,
                           height: `${item.iconSize || '0.38rem'}`,
-                          background: `url(${
-                            item.selectedIconPath
-                          }) center center /  ${item.iconSize ||
+                          background: `url(${item.selectedIconPath
+                            }) center center /  ${item.iconSize ||
                             '0.38rem'} ${item.iconSize || '0.38rem'} no-repeat`,
                         }}
                       />
@@ -320,7 +323,7 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
                     if (item.onPress) {
                       item.onPress();
                     } else {
-                      history.push(item.pagePath);
+                      navigate(item.pagePath);
                     }
                   }}
                   key={item.pagePath}
@@ -335,4 +338,4 @@ const AlitaLayout: FC<AlitaLayoutProps> = ({
   );
 };
 
-export default withRouter(AlitaLayout);
+export default AlitaLayout;
